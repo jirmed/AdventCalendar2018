@@ -1,12 +1,8 @@
 package net.konzult.adventcalendar2018;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -15,23 +11,6 @@ import java.util.List;
 public class Device {
 
     public static final int MAX_CALIBRATE_LOOPS = 1000;
-
-    private static void calibrate(String filename) throws IOException {
-        Device device = new Device();
-        File file = new File(".//Resources//" + filename);
-
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new FileReader(file));
-        } catch (FileNotFoundException fileNotFoundException) {
-            System.out.println("File not found");
-        }
-        String st;
-        while ((st = br.readLine()) != null) {
-            device.adjust(Integer.parseInt(st));
-        }
-        System.out.println(device);
-    }
 
     private int frequency;
     private boolean calibrated;
@@ -46,22 +25,19 @@ public class Device {
     }
 
     public Device calibrate(List<Integer> freqs) throws CannotCalibrateException {
-        List<Integer> usedFreqs = new ArrayList<>();
+        Set<Integer> usedFreqs = new HashSet<>();
         this.setCalibrated(false);
         usedFreqs.add(this.getFrequency());
         for (int i = 0; i < MAX_CALIBRATE_LOOPS; i++) {
             for (Integer freq : freqs) {
                 this.adjust(freq);
-                if (usedFreqs.contains(this.getFrequency())) {
+                if (!usedFreqs.add(frequency)) {
                     this.setCalibrated(true);
                     return this;
-                } else
-                    usedFreqs.add(this.getFrequency());
+                }
             }
         }
-
         throw new CannotCalibrateException();
-
     }
 
     public int calculateChecksum(List<String> ids) {
@@ -82,20 +58,19 @@ public class Device {
                 }
             }
         }
-        return twos*threes;
+        return twos * threes;
     }
 
     public String findSimilar(List<String> ids) {
         for (int i = 0; i < ids.size(); i++) {
             Box box = new Box(ids.get(i));
             String similarId = box.findFirstSimilarId(ids);
-            if (similarId != null ) {
+            if (similarId != null) {
                 return box.findCommonPart(similarId);
             }
         }
         return null;
     }
-
 
 
     public int getFrequency() {
