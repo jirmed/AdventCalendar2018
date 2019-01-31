@@ -1,9 +1,7 @@
 package net.konzult.adventcalendar2018.day4;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class LogAnalyzer {
     private final Map<Integer, Guard> guards = new HashMap<Integer, Guard>();
@@ -33,11 +31,11 @@ public class LogAnalyzer {
                     break;
                 case AWAKE:
                     sleeps = false;
-                    if (logItem.getDateTime().toLocalDate() == lastSleep.toLocalDate()
+                    if (logItem.getDateTime().toLocalDate().equals(lastSleep.toLocalDate())
                             && logItem.getDateTime().getHour() == 0
                             && lastSleep.getHour() == 0) {
-                        for (int minute = logItem.getDateTime().getMinute();
-                             minute < lastSleep.getMinute(); minute++) {
+                        for (int minute = lastSleep.getMinute();
+                             minute < logItem.getDateTime().getMinute(); minute++) {
                             guard.minuteInc(minute);
                         }
                     }
@@ -46,7 +44,7 @@ public class LogAnalyzer {
         }
     }
 
-    public Guard getMaxSleepGuard() {
+    public Guard getMaxSleepGuardByMaxMinute() {
         Guard.SleepCount maxSleepCount = null;
         Guard maxGuard = null;
         for (Guard guard : guards.values()
@@ -59,6 +57,10 @@ public class LogAnalyzer {
             }
         }
         return maxGuard;
+    }
+
+    public Guard getMaxSleepGuardByTotalTime() {
+        return guards.values().stream().max(Comparator.comparing(Guard::getTotalSleepTime)).get();
     }
 
     public List<LogItem> getLog() {

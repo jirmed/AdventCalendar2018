@@ -8,7 +8,7 @@ class FileParserTest {
 
     @Test
     void parseRectangle() {
-        assertThat(FileParser.parseRectangle("#1 @ 509,796: 18x15"))
+        assertThat(Rectangle.parseRectangle("#1 @ 509,796: 18x15"))
                 .isEqualTo(new Rectangle(1, 509, 796, 18, 15));
     }
 }

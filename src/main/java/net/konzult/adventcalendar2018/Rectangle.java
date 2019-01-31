@@ -1,5 +1,9 @@
 package net.konzult.adventcalendar2018;
 
+import java.io.IOException;
+import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Rectangle {
@@ -12,6 +16,31 @@ public class Rectangle {
         this.fromTop = fromTop;
         this.width = width;
         this.height = height;
+    }
+
+    public static List<Rectangle> readRectangleListFile(String fileName) throws IOException {
+        List result = new ArrayList<>();
+        List<String> strings = FileParser.readStringListFile(fileName);
+        for (int i = 0; i < strings.size(); i++) {
+            String s = strings.get(i);
+            result.add(parseRectangle(s));
+        }
+        return result;
+    }
+
+    public static Rectangle parseRectangle(String stringToParse) {
+        if (!stringToParse.matches("^#\\d+\\s+@\\s+\\d+,\\d+:\\s+\\d+x\\d+$"))
+            throw new InvalidParameterException("Invalid format");
+        String s = stringToParse.replaceAll("[#@:]", "");
+        String[] parts = s.split("\\s+");
+        String[] corner = parts[1].split(",");
+        String[] size = parts[2].split("x");
+        return new Rectangle(
+                Integer.parseInt(parts[0]),
+                Integer.parseInt(corner[0]),
+                Integer.parseInt(corner[1]),
+                Integer.parseInt(size[0]),
+                Integer.parseInt(size[1]));
     }
 
     public int getFromLeft() {

@@ -11,54 +11,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FileParser {
-    static List<Integer> readIntListFile(String fileName) throws IOException {
+    static final ClassLoader classLoader = FileParser.class.getClassLoader();
+
+    public static List<Integer> readIntListFile(String fileName) throws IOException {
         return FileUtils
-                .readLines(new File(fileName), "utf-8")
+                .readLines(new File(classLoader.getResource(fileName).getFile()), "utf-8")
                 .stream()
                 .map(s -> Integer.parseInt(s))
                 .collect(Collectors.toList());
     }
 
-    static List<String> readStringListFile(String fileName) throws IOException {
+    public static List<String> readStringListFile(String fileName) throws IOException {
         return FileUtils
-                .readLines(new File(fileName), "utf-8")
+                .readLines(new File(classLoader.getResource(fileName).getFile()), "utf-8")
                 .stream()
                 .collect(Collectors.toList());
     }
 
-    static List<Rectangle> readRectangleListFile(String fileName) throws IOException {
-        List result = new ArrayList<>();
-        List<String> strings = readStringListFile(fileName);
-        for (int i = 0; i < strings.size(); i++) {
-            String s = strings.get(i);
-            result.add(parseRectangle(s));
-        }
-        return result;
-    }
-
-    public static Rectangle parseRectangle(String stringToParse) {
-        if (!stringToParse.matches("^#\\d+\\s+@\\s+\\d+,\\d+:\\s+\\d+x\\d+$"))
-            throw new InvalidParameterException("Invalid format");
-        String s = stringToParse.replaceAll("[#@:]", "");
-        String[] parts = s.split("\\s+");
-        String[] corner = parts[1].split(",");
-        String[] size = parts[2].split("x");
-        return new Rectangle(
-                Integer.parseInt(parts[0]),
-                Integer.parseInt(corner[0]),
-                Integer.parseInt(corner[1]),
-                Integer.parseInt(size[0]),
-                Integer.parseInt(size[1]));
-    }
-
-    public static List<LogItem> readLogItemListFile(String fileName) throws IllegalAccessException, IOException {
-        List result = new ArrayList<>();
-        List<String> strings = readStringListFile(fileName);
-        for (int i = 0; i < strings.size(); i++) {
-            String s = strings.get(i);
-            result.add(LogItem.factory(s));
-        }
-        return result;
-
-    }
 }

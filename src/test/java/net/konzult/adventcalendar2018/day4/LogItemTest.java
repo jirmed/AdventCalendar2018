@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -21,5 +22,12 @@ class LogItemTest {
                 .isEqualTo(new LogItem(LocalDateTime.of(1518, Month.APRIL, 21, 0, 4, 0),
                         GuardAction.GUARD, 3331));
 
+    }
+
+
+    @Test
+    void testReadLogItemListFile() throws Exception{
+        List<LogItem> logItems = LogItem.readLogItemListFile("day4test.txt");
+        assertThat(logItems.size()).isEqualTo(17);
     }
 }

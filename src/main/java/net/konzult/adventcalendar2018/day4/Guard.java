@@ -5,6 +5,7 @@ import java.util.Objects;
 public class Guard {
     private final int id;
     private int[] minutes = new int[59];
+    private int totalSleepTime = 0;
 
     public Guard(int id) {
         this.id = id;
@@ -19,6 +20,7 @@ public class Guard {
     }
 
     public int minuteInc(int minute) {
+        totalSleepTime++;
         return minutes[minute]++;
     }
 
@@ -34,6 +36,10 @@ public class Guard {
             }
         }
         return new SleepCount(max_minute, max);
+    }
+
+    public int getTotalSleepTime() {
+        return totalSleepTime;
     }
 
     @Override
@@ -72,6 +78,7 @@ public class Guard {
         public int getCount() {
             return count;
         }
+
 
         @Override
         public String toString() {

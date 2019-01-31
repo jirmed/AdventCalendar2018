@@ -21,5 +21,6 @@ class GuardTest {
         guard.minuteInc(15);
         assertThat(guard.getMaxSleepCount().getCount()).isEqualTo(2);
         assertThat(guard.getMaxSleepCount().getMinute()).isEqualTo(15);
+        assertThat(guard.getTotalSleepTime()).isEqualTo(3);
     }
 }

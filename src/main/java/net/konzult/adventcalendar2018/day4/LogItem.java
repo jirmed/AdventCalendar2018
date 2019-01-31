@@ -1,7 +1,12 @@
 package net.konzult.adventcalendar2018.day4;
 
+import net.konzult.adventcalendar2018.FileParser;
+
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,6 +47,17 @@ public class LogItem implements Comparable<LogItem> {
         } else {
             throw new IllegalAccessException("Invalid format");
         }
+    }
+
+    public static List<LogItem> readLogItemListFile(String fileName) throws IllegalAccessException, IOException {
+        List result = new ArrayList<>();
+        List<String> strings = FileParser.readStringListFile(fileName);
+        for (int i = 0; i < strings.size(); i++) {
+            String s = strings.get(i);
+            result.add(factory(s));
+        }
+        return result;
+
     }
 
     public LocalDateTime getDateTime() {
