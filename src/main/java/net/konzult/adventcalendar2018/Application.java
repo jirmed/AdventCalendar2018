@@ -17,6 +17,7 @@ import net.konzult.adventcalendar2018.day6.World;
 import net.konzult.adventcalendar2018.day7.AssemblyGuide;
 import net.konzult.adventcalendar2018.day7.StepOrder;
 import net.konzult.adventcalendar2018.day8.License;
+import net.konzult.adventcalendar2018.day9.MarbleGame;
 
 import java.io.IOException;
 import java.util.List;
@@ -36,7 +37,21 @@ public class Application {
 //        day5();
 //        day6();
 //        day7();
-        day8();
+//        day8();
+        day9();
+    }
+
+    private static void day9() {
+        System.out.println("Day 9");
+        MarbleGame marbleGame;
+        System.out.println("Task 1");
+        marbleGame = new MarbleGame(465);
+        marbleGame.play(71940 );
+        System.out.println(marbleGame.getMaxScore());
+        System.out.println("Task 2");
+        marbleGame = new MarbleGame(465);
+        marbleGame.play(71940*100 );
+        System.out.println(marbleGame.getMaxScore());
     }
 
     private static void day8() {
