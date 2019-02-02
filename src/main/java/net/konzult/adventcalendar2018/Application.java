@@ -16,6 +16,7 @@ import net.konzult.adventcalendar2018.day6.Coordinate;
 import net.konzult.adventcalendar2018.day6.World;
 import net.konzult.adventcalendar2018.day7.AssemblyGuide;
 import net.konzult.adventcalendar2018.day7.StepOrder;
+import net.konzult.adventcalendar2018.day8.License;
 
 import java.io.IOException;
 import java.util.List;
@@ -34,7 +35,24 @@ public class Application {
 //        day4();
 //        day5();
 //        day6();
-        day7();
+//        day7();
+        day8();
+    }
+
+    private static void day8() {
+        System.out.println("Day 8");
+        License license = null;
+        try {
+            license = License.readLicenseFile("day8.txt");
+        } catch (IOException e) {
+            System.out.println("Cannot read file day8.txt");
+        }
+        System.out.println("Task 1");
+        System.out.println(license.getCheckSum());
+        System.out.println("Task 2");
+        System.out.println(license.getRootNode().getValue());
+
+
     }
 
     private static void day7() {
