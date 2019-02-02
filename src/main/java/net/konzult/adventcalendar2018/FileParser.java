@@ -1,12 +1,9 @@
 package net.konzult.adventcalendar2018;
 
-import net.konzult.adventcalendar2018.day4.LogItem;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.InvalidParameterException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,17 +12,27 @@ public class FileParser {
 
     public static List<Integer> readIntListFile(String fileName) throws IOException {
         return FileUtils
-                .readLines(new File(classLoader.getResource(fileName).getFile()), "utf-8")
+                .readLines(getFile(fileName), "utf-8")
                 .stream()
-                .map(s -> Integer.parseInt(s))
+                .map(Integer::parseInt)
                 .collect(Collectors.toList());
     }
 
     public static List<String> readStringListFile(String fileName) throws IOException {
         return FileUtils
-                .readLines(new File(classLoader.getResource(fileName).getFile()), "utf-8")
+                .readLines(getFile(fileName), "utf-8")
                 .stream()
                 .collect(Collectors.toList());
+    }
+
+    public static String readStringFile(String fileName) throws  IOException{
+        return FileUtils
+                .readFileToString(getFile(fileName), "utf-8");
+
+    }
+
+    private static File getFile(String fileName) {
+        return new File(classLoader.getResource(fileName).getFile());
     }
 
 }

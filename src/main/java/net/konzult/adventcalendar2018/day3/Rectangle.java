@@ -1,4 +1,6 @@
-package net.konzult.adventcalendar2018;
+package net.konzult.adventcalendar2018.day3;
+
+import net.konzult.adventcalendar2018.FileParser;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;

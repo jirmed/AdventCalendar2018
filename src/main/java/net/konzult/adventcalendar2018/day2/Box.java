@@ -1,6 +1,5 @@
-package net.konzult.adventcalendar2018;
+package net.konzult.adventcalendar2018.day2;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class Box {
@@ -8,6 +7,38 @@ public class Box {
 
     public Box(String id) {
         this.id = id;
+    }
+
+    public static String findSimilar(List<String> ids) {
+        for (int i = 0; i < ids.size(); i++) {
+            Box box = new Box(ids.get(i));
+            String similarId = box.findFirstSimilarId(ids);
+            if (similarId != null) {
+                return box.findCommonPart(similarId);
+            }
+        }
+        return null;
+    }
+
+    public static int calculateChecksum(List<String> ids) {
+        int twos = 0;
+        int threes = 0;
+
+        for (String id : ids) {
+            for (char c : id.toCharArray()) {
+                if (id.chars().filter(ch -> ch == c).count() == 2) {
+                    twos++;
+                    break;
+                }
+            }
+            for (char c : id.toCharArray()) {
+                if (id.chars().filter(ch -> ch == c).count() == 3) {
+                    threes++;
+                    break;
+                }
+            }
+        }
+        return twos * threes;
     }
 
     @Override

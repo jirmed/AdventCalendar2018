@@ -5,7 +5,6 @@
  */
 package net.konzult.adventcalendar2018;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
@@ -13,12 +12,13 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.jupiter.api.DisplayName;
+import net.konzult.adventcalendar2018.day1.CannotCalibrateException;
+import net.konzult.adventcalendar2018.day1.Device;
+import net.konzult.adventcalendar2018.day2.Box;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * @author jiri21
@@ -99,7 +99,7 @@ public class DeviceTest {
     @MethodSource("calculateChecksumData")
     public void testCalculateChecksum(List<String> ids, Integer expected) {
         Device device = new Device();
-        assertThat(device.calculateChecksum(ids)).isEqualTo(expected);
+        assertThat(Box.calculateChecksum(ids)).isEqualTo(expected);
     }
 
     @Test
@@ -108,7 +108,7 @@ public class DeviceTest {
         List<String> ids = Arrays.asList(
                 "jsklds","abcde","fufl","abded","axcde","slkjfs"
         );
-        assertThat(device.findSimilar(ids)).isEqualTo("acde");
+        assertThat(Box.findSimilar(ids)).isEqualTo("acde");
 
 
     }

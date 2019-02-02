@@ -1,12 +1,12 @@
 package net.konzult.adventcalendar2018;
 
+import net.konzult.adventcalendar2018.day2.Box;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class BoxTest {
 

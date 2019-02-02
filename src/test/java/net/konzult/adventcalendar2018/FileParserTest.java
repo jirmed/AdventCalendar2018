@@ -1,5 +1,6 @@
 package net.konzult.adventcalendar2018;
 
+import net.konzult.adventcalendar2018.day3.Rectangle;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
