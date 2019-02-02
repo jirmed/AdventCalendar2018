@@ -1,4 +1,4 @@
-package net.konzult.adventcalendar2018;
+package net.konzult.adventcalendar2018.day3;
 
 import java.util.*;
 
@@ -65,5 +65,37 @@ public class Fabric {
 
     public Set<Tile> getDuplicateTiles() {
         return duplicateTiles;
+    }
+
+    public static class Tile {
+        private final int x, y;
+
+        public Tile(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public int getY() {
+            return y;
+        }
+
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Tile tile = (Tile) o;
+            return x == tile.x &&
+                    y == tile.y;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(x, y);
+        }
     }
 }

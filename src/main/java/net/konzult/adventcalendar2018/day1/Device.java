@@ -1,4 +1,4 @@
-package net.konzult.adventcalendar2018;
+package net.konzult.adventcalendar2018.day1;
 
 import java.util.HashSet;
 import java.util.List;
@@ -38,38 +38,6 @@ public class Device {
             }
         }
         throw new CannotCalibrateException();
-    }
-
-    public int calculateChecksum(List<String> ids) {
-        int twos = 0;
-        int threes = 0;
-
-        for (String id : ids) {
-            for (char c : id.toCharArray()) {
-                if (id.chars().filter(ch -> ch == c).count() == 2) {
-                    twos++;
-                    break;
-                }
-            }
-            for (char c : id.toCharArray()) {
-                if (id.chars().filter(ch -> ch == c).count() == 3) {
-                    threes++;
-                    break;
-                }
-            }
-        }
-        return twos * threes;
-    }
-
-    public String findSimilar(List<String> ids) {
-        for (int i = 0; i < ids.size(); i++) {
-            Box box = new Box(ids.get(i));
-            String similarId = box.findFirstSimilarId(ids);
-            if (similarId != null) {
-                return box.findCommonPart(similarId);
-            }
-        }
-        return null;
     }
 
 

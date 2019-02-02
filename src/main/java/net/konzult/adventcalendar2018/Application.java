@@ -5,9 +5,17 @@
  */
 package net.konzult.adventcalendar2018;
 
-import net.konzult.adventcalendar2018.day4.Guard;
-import net.konzult.adventcalendar2018.day4.LogAnalyzer;
-import net.konzult.adventcalendar2018.day4.LogItem;
+import net.konzult.adventcalendar2018.day1.CannotCalibrateException;
+import net.konzult.adventcalendar2018.day1.Device;
+import net.konzult.adventcalendar2018.day2.Box;
+import net.konzult.adventcalendar2018.day3.Fabric;
+import net.konzult.adventcalendar2018.day3.Rectangle;
+import net.konzult.adventcalendar2018.day4.*;
+import net.konzult.adventcalendar2018.day5.Polymer;
+import net.konzult.adventcalendar2018.day6.Coordinate;
+import net.konzult.adventcalendar2018.day6.World;
+import net.konzult.adventcalendar2018.day7.AssemblyGuide;
+import net.konzult.adventcalendar2018.day7.StepOrder;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,7 +31,72 @@ public class Application {
 //        day2task1();
 //        day2task2();
 //        day3();
-        day4();
+//        day4();
+//        day5();
+//        day6();
+        day7();
+    }
+
+    private static void day7() {
+        System.out.println("day7");
+        AssemblyGuide assemblyGuide = null;
+        List<StepOrder> stepOrderList = null;
+        try {
+            stepOrderList = StepOrder.readStepOrderListFile("day7.txt");
+        } catch (IOException e) {
+            System.out.println("Cannot read file day7.txt");
+        }
+        System.out.println("Task 1");
+        assemblyGuide = new AssemblyGuide(stepOrderList);
+        assemblyGuide.init();
+        System.out.println(assemblyGuide.calculateSimpleStepSequence());
+
+        System.out.println("Task 2");
+        assemblyGuide = new AssemblyGuide(stepOrderList);
+        assemblyGuide.setMaxElves(5);
+        assemblyGuide.setBaseTime(60);
+        assemblyGuide.init();
+        assemblyGuide.work();
+
+        System.out.println(assemblyGuide.getStepSequence());
+        System.out.println(assemblyGuide.getMinute());
+
+
+    }
+
+    private static void day6() {
+        System.out.println("Day 6");
+        World world = null;
+        try {
+            world = new World(Coordinate.readCoordinateListFile("day6.txt"));
+        } catch (IOException e) {
+            System.out.println("Cannot read file day6.txt");
+        }
+        System.out.println("Task 1");
+        System.out.println(world.getMaxAreaCoordinate().getArea());
+        System.out.println("Task 2");
+        System.out.println(world.getAreaWithinTotalDistance(10000));
+    }
+
+    private static void day5() {
+        System.out.println("Day 5");
+        Polymer polymer = null;
+        String formula = "";
+        try {
+            formula = FileParser.readStringFile("day5.txt");
+        } catch (IOException e) {
+            System.out.println("Cannot read file day5.txt");
+        }
+
+        System.out.println("Task 1");
+        polymer = new Polymer(formula);
+        polymer.reduce();
+        System.out.println(polymer.getFormula().length());
+
+        System.out.println("Task 2");
+        polymer = new Polymer(formula);
+        polymer.maxReduceByRemovingAnyUnit();
+        System.out.println(polymer.getFormula().length());
 
     }
 
@@ -48,14 +121,14 @@ public class Application {
         maxSleepGuard = logAnalyzer.getMaxSleepGuardByTotalTime();
         System.out.println(maxSleepGuard);
         System.out.println(maxSleepGuard.getMaxSleepCount());
-        System.out.println(maxSleepGuard.getId()*maxSleepGuard.getMaxSleepCount().getMinute());
+        System.out.println(maxSleepGuard.getId() * maxSleepGuard.getMaxSleepCount().getMinute());
 
 
         System.out.println("Task 2");
         maxSleepGuard = logAnalyzer.getMaxSleepGuardByMaxMinute();
         System.out.println(maxSleepGuard);
         System.out.println(maxSleepGuard.getMaxSleepCount());
-        System.out.println(maxSleepGuard.getId()*maxSleepGuard.getMaxSleepCount().getMinute());
+        System.out.println(maxSleepGuard.getId() * maxSleepGuard.getMaxSleepCount().getMinute());
 
     }
 
@@ -74,14 +147,14 @@ public class Application {
         Device device = new Device();
         System.out.println("Day 2 Task 1");
 
-        System.out.println(device.calculateChecksum(FileParser.readStringListFile("day2.txt")));
+        System.out.println(Box.calculateChecksum(FileParser.readStringListFile("day2.txt")));
     }
 
     private static void day2task2() throws IOException {
         Device device = new Device();
         System.out.println("Day 2 Task 2");
 
-        System.out.println(device.findSimilar(FileParser.readStringListFile("day2.txt")));
+        System.out.println(Box.findSimilar(FileParser.readStringListFile("day2.txt")));
     }
 
 
