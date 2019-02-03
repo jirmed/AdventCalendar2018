@@ -7,6 +7,8 @@ package net.konzult.adventcalendar2018;
 
 import net.konzult.adventcalendar2018.day1.CannotCalibrateException;
 import net.konzult.adventcalendar2018.day1.Device;
+import net.konzult.adventcalendar2018.day10.Message;
+import net.konzult.adventcalendar2018.day11.Battery;
 import net.konzult.adventcalendar2018.day2.Box;
 import net.konzult.adventcalendar2018.day3.Fabric;
 import net.konzult.adventcalendar2018.day3.Rectangle;
@@ -38,7 +40,45 @@ public class Application {
 //        day6();
 //        day7();
 //        day8();
-        day9();
+//        day9();
+//        day10();
+        day11();
+
+    }
+
+    private static void day11() {
+        System.out.println("Day 11");
+
+        Battery battery = new Battery(300, 2866);
+        battery.init();
+
+        System.out.println("Task 1");
+        System.out.println(battery.getMaxPowerGrid(3).toString());
+
+        System.out.println("Task 2");
+        System.out.println(battery.getMaxPowerGrid().toString());
+
+    }
+
+    private static void day10() {
+        System.out.println("Day 10");
+        Message message = null;
+        try {
+            message = Message.readMessageFile("day10.txt");
+        } catch (IOException e) {
+            System.out.println("Cannot read file day10.txt");
+        }
+
+        System.out.println("Task 1");
+
+        List<String> lines = message.getSmallestMessage();
+        for (String line : lines) {
+            System.out.println(line);
+        }
+
+        System.out.println("Task 2");
+        System.out.println(message.getMinute()-1);
+
     }
 
     private static void day9() {
@@ -46,11 +86,11 @@ public class Application {
         MarbleGame marbleGame;
         System.out.println("Task 1");
         marbleGame = new MarbleGame(465);
-        marbleGame.play(71940 );
+        marbleGame.play(71940);
         System.out.println(marbleGame.getMaxScore());
         System.out.println("Task 2");
         marbleGame = new MarbleGame(465);
-        marbleGame.play(71940*100 );
+        marbleGame.play(71940 * 100);
         System.out.println(marbleGame.getMaxScore());
     }
 
