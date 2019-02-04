@@ -9,6 +9,7 @@ import net.konzult.adventcalendar2018.day1.CannotCalibrateException;
 import net.konzult.adventcalendar2018.day1.Device;
 import net.konzult.adventcalendar2018.day10.Message;
 import net.konzult.adventcalendar2018.day11.Battery;
+import net.konzult.adventcalendar2018.day12.Garden;
 import net.konzult.adventcalendar2018.day2.Box;
 import net.konzult.adventcalendar2018.day3.Fabric;
 import net.konzult.adventcalendar2018.day3.Rectangle;
@@ -42,8 +43,32 @@ public class Application {
 //        day8();
 //        day9();
 //        day10();
-        day11();
+//        day11();
+        day12();
 
+    }
+
+    private static void day12() {
+        System.out.println("Day 12");
+
+        Garden garden = null;
+        try {
+            garden = Garden.readGardenFile("day12.txt");
+        } catch (IOException e) {
+            System.out.println("Cannot read file day12.txt");
+        }
+
+        System.out.println("Task 2");
+        System.out.println(garden.playGenerations(20l).getCheckSum());
+
+        try {
+            garden = Garden.readGardenFile("day12.txt");
+        } catch (IOException e) {
+            System.out.println("Cannot read file day12.txt");
+        }
+
+        System.out.println("Task 2");
+        System.out.println(garden.getCheckumAfterManyGenerations(50000000000l));
     }
 
     private static void day11() {
