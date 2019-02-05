@@ -1,15 +1,19 @@
 package net.konzult.adventcalendar2018.day13;
 
+import java.util.Objects;
+
 import static net.konzult.adventcalendar2018.day13.TrackType.*;
 
 public class Cart {
     private static TrackType[] TURN_SCHEMA = {LEFT, STRAIGHT, RIGHT};
+    private final int id;
     private Coordinates position;
     private Coordinates direction;
 
     private int nextTurnIndex = 0;
 
-    public Cart(Coordinates position, Coordinates direction) {
+    public Cart(int id, Coordinates position, Coordinates direction) {
+        this.id = id;
         this.position = position;
         this.direction = direction;
     }
@@ -30,19 +34,13 @@ public class Cart {
         this.direction = direction;
     }
 
-    @Override
-    public String toString() {
-        return "Cart{" +
-                "position=" + position +
-                ", direction=" + direction +
-                '}';
-    }
-
     public Cart tick(TrackType trackTypeAhead) {
-        position.add(direction);
+        position = position.add(direction);
         switch (trackTypeAhead) {
             case LEFT:
             case RIGHT:
+            case POSITIVE_SWAP:
+            case NEGATIVE_SWAP:
                 turn(trackTypeAhead);
                 break;
 
@@ -57,12 +55,41 @@ public class Cart {
 
     private void turn(TrackType turnType) {
         switch (turnType) {
+            case POSITIVE_SWAP:
+                direction = Coordinates.of(direction.getY() , direction.getX() );
+                break;
+            case NEGATIVE_SWAP:
+                direction = Coordinates.of(direction.getY() *-1 , direction.getX() *-1);
+                break;
             case LEFT:
-                direction = Coordinates.of(direction.getY(), direction.getX() * -1);
+                direction = Coordinates.of(direction.getY() , direction.getX()*-1 );
                 break;
             case RIGHT:
-                direction = Coordinates.of(direction.getY() * -1, direction.getX());
+                direction = Coordinates.of(direction.getY() *-1 , direction.getX() );
                 break;
+
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cart cart = (Cart) o;
+        return id == cart.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "id=" + id +
+                ", position=" + position +
+                ", direction=" + direction +
+                '}';
     }
 }

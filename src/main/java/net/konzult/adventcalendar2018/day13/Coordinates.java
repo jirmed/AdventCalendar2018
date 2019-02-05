@@ -2,10 +2,11 @@ package net.konzult.adventcalendar2018.day13;
 
 import net.konzult.adventcalendar2018.day6.Coordinate;
 
+import java.util.Comparator;
 import java.util.Objects;
 
-public class Coordinates {
-    private int x, y;
+public class Coordinates implements Comparable<Coordinates> {
+    private final int x, y;
 
     public Coordinates(int x, int y) {
         this.x = x;
@@ -19,6 +20,7 @@ public class Coordinates {
     public int getY() {
         return y;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -43,13 +45,17 @@ public class Coordinates {
     }
 
     public Coordinates add(Coordinates direction) {
-        x += direction.getX();
-        y += direction.getY();
-        return this;
+        return new Coordinates(x + direction.x, y + direction.y);
     }
 
 
     public static Coordinates of(int x, int y) {
-        return new Coordinates(x,y);
+        return new Coordinates(x, y);
+    }
+
+    @Override
+    public int compareTo(Coordinates o) {
+        if (y == o.y) return x - o.x;
+        else return y - o.y;
     }
 }

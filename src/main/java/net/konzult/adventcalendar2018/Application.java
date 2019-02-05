@@ -10,6 +10,7 @@ import net.konzult.adventcalendar2018.day1.Device;
 import net.konzult.adventcalendar2018.day10.Message;
 import net.konzult.adventcalendar2018.day11.Battery;
 import net.konzult.adventcalendar2018.day12.Garden;
+import net.konzult.adventcalendar2018.day13.TrackChart;
 import net.konzult.adventcalendar2018.day2.Box;
 import net.konzult.adventcalendar2018.day3.Fabric;
 import net.konzult.adventcalendar2018.day3.Rectangle;
@@ -44,7 +45,28 @@ public class Application {
 //        day9();
 //        day10();
 //        day11();
-        day12();
+//        day12();
+        day13();
+
+    }
+
+    private static void day13() {
+        System.out.println("Day 13");
+        List<String> strings = null;
+        try {
+            strings = FileParser.readStringListFile("day13.txt");
+        } catch (IOException e) {
+            System.out.println("Cannot read file day13.txt");
+        }
+        TrackChart trackChart = new TrackChart();
+        trackChart.parseTrack(strings);
+
+        System.out.println("Task 1");
+        System.out.println(trackChart.tickUntilCrash());
+
+        System.out.println("Task 2");
+        System.out.println(trackChart.tickUntilLastRemains());
+
 
     }
 
