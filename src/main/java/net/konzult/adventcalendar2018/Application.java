@@ -11,6 +11,7 @@ import net.konzult.adventcalendar2018.day10.Message;
 import net.konzult.adventcalendar2018.day11.Battery;
 import net.konzult.adventcalendar2018.day12.Garden;
 import net.konzult.adventcalendar2018.day13.TrackChart;
+import net.konzult.adventcalendar2018.day14.ChocolateChart;
 import net.konzult.adventcalendar2018.day2.Box;
 import net.konzult.adventcalendar2018.day3.Fabric;
 import net.konzult.adventcalendar2018.day3.Rectangle;
@@ -46,8 +47,18 @@ public class Application {
 //        day10();
 //        day11();
 //        day12();
-        day13();
+//        day13();
+        day14();
 
+    }
+
+    private static void day14() {
+        System.out.println("Day 14");
+        System.out.println("Task 1");
+        System.out.println(new ChocolateChart().scoreTenAfter(990941));
+
+        System.out.println("Task 2");
+        System.out.println(new ChocolateChart().findRecipe("990941"));
     }
 
     private static void day13() {
