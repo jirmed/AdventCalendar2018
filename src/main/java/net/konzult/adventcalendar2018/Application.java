@@ -12,6 +12,7 @@ import net.konzult.adventcalendar2018.day11.Battery;
 import net.konzult.adventcalendar2018.day12.Garden;
 import net.konzult.adventcalendar2018.day13.TrackChart;
 import net.konzult.adventcalendar2018.day14.ChocolateChart;
+import net.konzult.adventcalendar2018.day15.BattleField;
 import net.konzult.adventcalendar2018.day2.Box;
 import net.konzult.adventcalendar2018.day3.Fabric;
 import net.konzult.adventcalendar2018.day3.Rectangle;
@@ -48,7 +49,35 @@ public class Application {
 //        day11();
 //        day12();
 //        day13();
-        day14();
+//        day14();
+
+        day15();
+
+
+    }
+
+    private static void day15() {
+        System.out.println("Day 15");
+        List<String> strings = null;
+        try {
+            strings = FileParser.readStringListFile("day15.txt");
+        } catch (IOException e) {
+            System.out.println("Cannot read file day15.txt");
+        }
+        BattleField field;
+        field = BattleField.parse(strings);
+        int rounds;
+
+        System.out.println("Task1");
+        field = BattleField.parse(strings);
+        rounds = field.play(10000);
+        System.out.println(rounds * field.getTotalHitpoints());
+
+        System.out.println("Task2");
+        field = BattleField.parse(strings);
+        field.setElfAttack(BattleField.getMinElfAttackToSurviveAll(strings));
+        rounds = field.play(10000);
+        System.out.println(rounds * field.getTotalHitpoints());
 
     }
 
