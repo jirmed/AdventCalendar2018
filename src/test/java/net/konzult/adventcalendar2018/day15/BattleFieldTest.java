@@ -1,6 +1,5 @@
 package net.konzult.adventcalendar2018.day15;
 
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import net.konzult.adventcalendar2018.FileParser;
 import net.konzult.adventcalendar2018.day13.Coordinates;
 import org.junit.jupiter.api.BeforeAll;
