@@ -40,16 +40,16 @@ public class Tester {
 
     public static Tester parse(List<String> strings) {
         List<Sample> samples = new ArrayList<>();
-        if (strings.size() % 4 != 4)
+        if (strings.size() % 4 != 0)
             throw new IllegalArgumentException("Invalid format");
-        Pattern patternBefore = Pattern.compile("^Before:\\s\\[(\\d+),\\s*(\\d+),\\s*(\\d+),\\s*(\\d+)]$");
-        Pattern patternAfter = Pattern.compile("^After:\\s\\[(\\d+),\\s*(\\d+),\\s*(\\d+),\\s*(\\d+)]$");
+        Pattern patternBefore = Pattern.compile("^Before:\\s\\[(\\d+),\\s*(\\d+),\\s*(\\d+),\\s*(\\d+)\\]$");
+        Pattern patternAfter = Pattern.compile("^After:\\s\\[(\\d+),\\s*(\\d+),\\s*(\\d+),\\s*(\\d+)\\]$");
         Pattern patternOperation = Pattern.compile("^(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)$");
 
         for (int i = 0; i < strings.size() / 4; i++) {
             int[] before = matchIntArray(patternBefore, strings.get(i * 4));
-            int[] operation = matchIntArray(patternBefore, strings.get(i * 4 + 1));
-            int[] after = matchIntArray(patternBefore, strings.get(i * 4 + 2));
+            int[] operation = matchIntArray(patternOperation, strings.get(i * 4 + 1));
+            int[] after = matchIntArray(patternBefore, strings.get(i * 4 + 0));
             samples.add(new Sample(before, after, operation));
         }
         return new Tester(samples);
