@@ -13,6 +13,9 @@ import net.konzult.adventcalendar2018.day12.Garden;
 import net.konzult.adventcalendar2018.day13.TrackChart;
 import net.konzult.adventcalendar2018.day14.ChocolateChart;
 import net.konzult.adventcalendar2018.day15.BattleField;
+import net.konzult.adventcalendar2018.day16.Instruction;
+import net.konzult.adventcalendar2018.day16.Processor;
+import net.konzult.adventcalendar2018.day16.Tester;
 import net.konzult.adventcalendar2018.day2.Box;
 import net.konzult.adventcalendar2018.day3.Fabric;
 import net.konzult.adventcalendar2018.day3.Rectangle;
@@ -27,6 +30,7 @@ import net.konzult.adventcalendar2018.day9.MarbleGame;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jiri21
@@ -50,10 +54,37 @@ public class Application {
 //        day12();
 //        day13();
 //        day14();
+//        day15();
+        cay16();
 
-        day15();
 
+    }
 
+    private static void cay16() {
+        System.out.println("Day 16");
+        List<String> strings1 = null;
+        try {
+            strings1 = FileParser.readStringListFile("day16_1.txt");
+        } catch (IOException e) {
+            System.out.println("Cannot read file day16_1.txt");
+        }
+        Tester tester =  Tester.parse(strings1);
+        System.out.println("Task 1");
+        System.out.println(tester.countSamplesWithValidInstructions(3));
+
+        System.out.println("Task 2");
+        List<String> strings2 = null;
+        try {
+            strings2 = FileParser.readStringListFile("day16_2.txt");
+        } catch (IOException e) {
+            System.out.println("Cannot read file day16_2.txt");
+        }
+        Map<Integer, Instruction> instructionMap = tester.createInstructionMap();
+        Processor processor = new Processor();
+        processor.setInstructionMap(instructionMap);
+        processor.parseProgram(strings2);
+        processor.run();
+        System.out.println(processor.getReg()[0]);
     }
 
     private static void day15() {
