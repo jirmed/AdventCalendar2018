@@ -5,16 +5,18 @@ import net.konzult.adventcalendar2018.day13.Coordinates;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.IntStream;
 
-import static net.konzult.adventcalendar2018.day17.Substance.CLAY;
-import static net.konzult.adventcalendar2018.day17.Substance.WATER;
+import static net.konzult.adventcalendar2018.day17.Substance.*;
 
 public class Ground {
 
     private final Map<Coordinates, Substance> groundMap = new TreeMap<>();
     private int minY;
     private int maxY;
+    private int counter = 0;
+    private boolean debug = false;
+
+    private final Map<Coordinates, Integer> trace = new HashMap<>();
 
     public Map<Coordinates, Substance> getGroundMap() {
         return groundMap;
@@ -41,43 +43,104 @@ public class Ground {
     }
 
     public boolean pour(Coordinates position) {
+        if (debug)
+            System.out.println(position);
+//        Integer posCount = trace.get(position);
+//        if (posCount == null) {
+//            trace.put(position, 1);
+//        } else if (posCount > 10) {
+//            debug = true;
+//        } else trace.put(position, posCount + 1);
+//        if (counter++ > 10000) return false;
         if (position.getY() > maxY)
             return false;
         if (position.getY() < minY)
             return pour(position.bellow());
-        if (groundMap.putIfAbsent(position, WATER) != null)
+        Substance substanceAtPosition = groundMap.get(position);
+        if (isSolid(substanceAtPosition))
             return true;
-        Coordinates bellowPosition = position.bellow();
+        else if (substanceAtPosition == null)
+            groundMap.putIfAbsent(position, WATER);
+//        Coordinates bellowPosition = position.bellow();
         Substance belowSubstance = groundMap.get(position.bellow());
-        if (belowSubstance == null)
-            if (pour(bellowPosition)) {
+        if (false /*belowSubstance == WATER*/) return false;
+        else if (!isSolid(belowSubstance))
+            if (pour(position.bellow())) {
                 groundMap.remove(position);
                 return pour(position);
-            } else return false;
-        boolean pourLeft = pour(position.left());
-        boolean pourRight = pour(position.right());
-        return pourLeft && pourRight;
+            } else {
+                return false;
+            }
+        else {
+            return (flood(position));
+        }
     }
 
-    public long getWaterCount() {
+    private boolean flood(Coordinates position) {
+        boolean canFlood = true;
+        for (Coordinates pos = position; !isSolid(groundMap.get(pos)); pos = pos.left()) {
+            if (!floodStep(pos)) {
+                canFlood = false;
+                break;
+            }
+        }
+
+        for (Coordinates pos = position.right(); !isSolid(groundMap.get(pos)); pos = pos.right()) {
+            if (!floodStep(pos)) {
+                canFlood = false;
+                break;
+            }
+        }
+
+        if (canFlood) {
+            for (Coordinates pos = position.left(); groundMap.get(pos) == WATER; pos = pos.left()) {
+                groundMap.put(pos, STILL_WATER);
+            }
+            for (Coordinates pos = position; groundMap.get(pos) == WATER; pos = pos.right()) {
+                groundMap.put(pos, STILL_WATER);
+            }
+            return true;
+        } else return false;
+
+    }
+
+    private boolean floodStep(Coordinates pos) {
+        boolean canFlood = true;
+        groundMap.put(pos, WATER);
+        if (!isSolid(groundMap.get(pos.bellow()))) {
+            if (groundMap.get(pos.bellow()) == null)
+                canFlood = pour(pos.bellow());
+            else canFlood = false;
+        }
+        return canFlood;
+    }
+
+    private boolean isSolid(Substance substance) {
+        return substance == CLAY || substance == STILL_WATER;
+    }
+
+    public long getTileCount(Substance substance) {
         return groundMap.entrySet().stream()
-                .filter(entry -> entry.getValue() == WATER)
+                .filter(entry -> entry.getValue() == substance)
                 .count();
     }
+
 
     public List<String> render() {
         int minX = groundMap.keySet().stream().mapToInt(Coordinates::getX).min().orElse(0);
         int maxX = groundMap.keySet().stream().mapToInt(Coordinates::getX).max().orElse(0);
         List<String> output = new ArrayList<>();
-        for (int y = minY-1; y <= maxY+1; y++) {
+        for (int y = minY - 1; y <= maxY + 1; y++) {
             StringBuilder stringBuilder = new StringBuilder();
-            for (int x = minX-1; x <= maxX+1; x++) {
+            for (int x = minX - 1; x <= maxX + 1; x++) {
                 Substance substance = groundMap.get(new Coordinates(x, y));
                 if (substance == CLAY)
                     stringBuilder.append("#");
                 else if (substance == WATER)
-                    stringBuilder.append("X");
-                else stringBuilder.append(".");
+                    stringBuilder.append("|");
+                else if (substance == STILL_WATER)
+                    stringBuilder.append("~");
+                else stringBuilder.append(" ");
             }
             output.add(stringBuilder.toString());
         }

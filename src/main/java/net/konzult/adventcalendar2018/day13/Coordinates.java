@@ -58,4 +58,15 @@ public class Coordinates implements Comparable<Coordinates> {
         if (y == o.y) return x - o.x;
         else return y - o.y;
     }
+
+    public Coordinates bellow() {
+        return new Coordinates(x,y+1);
+    }
+
+    public Coordinates left() {
+        return new Coordinates(x-1,y);
+    }
+    public Coordinates right() {
+        return new Coordinates(x+1,y);
+    }
 }
