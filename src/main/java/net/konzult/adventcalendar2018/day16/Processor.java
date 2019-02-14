@@ -1,32 +1,63 @@
 package net.konzult.adventcalendar2018.day16;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Pattern;
 
 public class Processor {
 
 
-    private int[] reg = new int[4];
-    private Map<Integer, Instruction> instructionMap;
-    private List<int[]> program = new ArrayList<>();
+    private int[] reg;
+    private Map<Integer, Instruction> instructionMap = new HashMap<>();
+    //    private List<int[]> programRaw = new ArrayList<>();
+    private int ipRegister = -1;
+    private List<Command> program;
+
+
+    public Processor() {
+        this(4);
+    }
+
+    public Processor(int registers) {
+        reg = new int[registers];
+    }
+
 
     public void parseProgram(List<String> strings) {
-        strings.stream().forEach(s -> {
-            program.add(Arrays.stream(s.split(" "))
-                    .mapToInt(Integer::parseInt)
-                    .toArray());
+        ipRegister = Pattern.compile("^#ip\\s+(\\d+)$")
+                .matcher(strings.get(0))
+                .results()
+                .map(m -> m.group(1))
+                .mapToInt(Integer::parseInt)
+                .findFirst()
+                .orElse(-1);
+        List<Command> p = new ArrayList<>();
+        strings.subList(1, strings.size())
+                .stream().forEach(s -> {
+            String[] parts = s.split(" ");
+            p.add(new Command(
+                    Instruction.valueOf(parts[0].toUpperCase()),
+                    Integer.parseInt(parts[1]),
+                    Integer.parseInt(parts[2]),
+                    Integer.parseInt(parts[3])));
         });
+        program = Collections.unmodifiableList(p);
     }
 
-    public List<int[]> getProgram() {
-        return program;
+    public void parseProgramRaw(List<String> strings) {
+        List<Command> p = new ArrayList<>();
+        strings.stream().forEach(s -> {
+            int[] parts = Arrays.stream(s.split(" "))
+                    .mapToInt(Integer::parseInt)
+                    .toArray();
+            p.add(new Command(
+                    instructionMap.get(parts[0]),
+                    parts[1],
+                    parts[2],
+                    parts[3]));
+        });
+        program = Collections.unmodifiableList(p);
     }
 
-    public void setProgram(List<int[]> program) {
-        this.program = program;
-    }
 
     public Map<Integer, Instruction> getInstructionMap() {
         return instructionMap;
@@ -118,9 +149,51 @@ public class Processor {
         return reg;
     }
 
-    public void run() {
-        program.stream().forEach(line
-                -> this.operation(instructionMap.get(line[0]),
-                line[1], line[2], line[3]));
+    public int[] operation(Command command) {
+        return operation(command.getInstruction(), command.getA(), command.getB(), command.getC());
+    }
+
+    public void run(int breakpoint) {
+        if (ipRegister < 0)
+            program.stream().forEach(line
+                    -> this.operation(line));
+        else {
+            int ip = reg[ipRegister];
+            while (ip < program.size() && ip!=breakpoint) {
+                Command command = program.get(ip);
+                operation(command);
+                ip = ++reg[ipRegister];
+            }
+        }
+    }
+
+    public void run(boolean speedUp) {
+        if (speedUp) {
+            run(2);
+            reg[0] = getSumOfDividers(reg[4]);
+        } else {
+            run(-1);
+        }
+    }
+
+    public static int getSumOfDividers(int input) {
+        int result = input;
+        for (int i = 1; i <= input/2 + 1; i++) {
+            if (input % i == 0)
+                result +=i;
+        }
+        return result;
+    }
+
+    public int getIpRegister() {
+        return ipRegister;
+    }
+
+    public void setIpRegister(int ipRegister) {
+        this.ipRegister = ipRegister;
+    }
+
+    public List<Command> getProgram() {
+        return program;
     }
 }

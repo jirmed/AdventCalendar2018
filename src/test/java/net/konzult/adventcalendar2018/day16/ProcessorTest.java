@@ -36,11 +36,44 @@ class ProcessorTest {
     }
 
     @Test
-    void testParseProgram() throws Exception {
+    void testParseProgramRaw() throws Exception {
         List<String> strings = FileParser.readStringListFile("day16_2.txt");
         Processor processor = new Processor();
-        processor.parseProgram(strings);
+        processor.parseProgramRaw(strings);
         assertThat(processor.getProgram()).hasSize(898);
+    }
 
+    @Test
+    void testParseProgram() throws Exception {
+        List<String> strings = FileParser.readStringListFile("day19test.txt");
+        Processor processor = new Processor();
+        processor.parseProgram(strings);
+        assertThat(processor.getProgram()).hasSize(7);
+        assertThat(processor.getIpRegister()).isEqualTo(0);
+
+    }
+
+    @Test
+    void testRunWithIpRegister() throws Exception {
+        List<String> strings = FileParser.readStringListFile("day19test.txt");
+        Processor processor = new Processor(6);
+        processor.parseProgram(strings);
+        processor.run(-1);
+        assertThat(processor.getReg()[0]).isEqualTo(7);
+    }
+
+    @Test
+    void testRunWithRealInput() throws Exception {
+        List<String> strings = FileParser.readStringListFile("day19.txt");
+        Processor processor = new Processor(6);
+        processor.parseProgram(strings);
+        processor.run(true);
+        assertThat(processor.getReg()[0]).isEqualTo(1728);
+    }
+
+
+    @Test
+    void testGetSumOfDividers() throws Exception {
+        assertThat(Processor.getSumOfDividers(994)).isEqualTo(1728);
     }
 }

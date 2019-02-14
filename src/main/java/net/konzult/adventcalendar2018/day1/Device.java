@@ -1,5 +1,8 @@
 package net.konzult.adventcalendar2018.day1;
 
+import net.konzult.adventcalendar2018.day16.Command;
+import net.konzult.adventcalendar2018.day16.Processor;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,6 +17,8 @@ public class Device {
 
     private int frequency;
     private boolean calibrated;
+    private Processor processor = new Processor(5);
+
 
     public Device() {
         this.frequency = 0;

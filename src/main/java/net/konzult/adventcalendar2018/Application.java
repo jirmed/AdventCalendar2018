@@ -57,9 +57,27 @@ public class Application {
 //        day14();
 //        day15();
 //        day16();
-        day18();
+//        day18();
+        day19();
 
 
+
+
+    }
+
+    private static void day19() {
+        System.out.println("Day 19");
+        List<String> strings = getStrings("day19.txt");
+        Processor processor = new Processor(6);
+        processor.parseProgram(strings);
+        processor.run(false);
+        System.out.println("Task 1");
+        System.out.println(processor.getReg()[0]);
+
+        System.out.println("Task 2");
+        processor.setReg(new int[]{1,0,0,0,0,0});
+        processor.run(true);
+        System.out.println(processor.getReg()[0]);
 
     }
 
@@ -91,8 +109,8 @@ public class Application {
         Map<Integer, Instruction> instructionMap = tester.createInstructionMap();
         Processor processor = new Processor();
         processor.setInstructionMap(instructionMap);
-        processor.parseProgram(stringsPart2);
-        processor.run();
+        processor.parseProgramRaw(stringsPart2);
+        processor.run(-1);
         System.out.println(processor.getReg()[0]);
     }
 
