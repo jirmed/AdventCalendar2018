@@ -16,6 +16,7 @@ import net.konzult.adventcalendar2018.day15.BattleField;
 import net.konzult.adventcalendar2018.day16.Instruction;
 import net.konzult.adventcalendar2018.day16.Processor;
 import net.konzult.adventcalendar2018.day16.Tester;
+import net.konzult.adventcalendar2018.day18.CollectionArea;
 import net.konzult.adventcalendar2018.day2.Box;
 import net.konzult.adventcalendar2018.day3.Fabric;
 import net.konzult.adventcalendar2018.day3.Rectangle;
@@ -55,36 +56,54 @@ public class Application {
 //        day13();
 //        day14();
 //        day15();
-        cay16();
+//        day16();
+        day18();
+
 
 
     }
 
-    private static void cay16() {
+    private static void day18() {
+        System.out.println("Day 18");
+        List<String> strings = getStrings("day18.txt");
+        CollectionArea area = new CollectionArea();
+        area.parseMap(strings);
+        System.out.println("Task1");
+        area.playMinutes(10);
+        System.out.println(area.getResourceValue());
+
+        System.out.println("Task 2");
+        area.parseMap(strings);
+        area.playMinutes(1000000000 );
+        System.out.println(area.getResourceValue());
+
+    }
+
+    private static void day16() {
         System.out.println("Day 16");
-        List<String> strings1 = null;
-        try {
-            strings1 = FileParser.readStringListFile("day16_1.txt");
-        } catch (IOException e) {
-            System.out.println("Cannot read file day16_1.txt");
-        }
-        Tester tester =  Tester.parse(strings1);
+        List<String> stringsPart1 = getStrings("day16_1.txt");
+        Tester tester =  Tester.parse(stringsPart1);
         System.out.println("Task 1");
         System.out.println(tester.countSamplesWithValidInstructions(3));
 
         System.out.println("Task 2");
-        List<String> strings2 = null;
-        try {
-            strings2 = FileParser.readStringListFile("day16_2.txt");
-        } catch (IOException e) {
-            System.out.println("Cannot read file day16_2.txt");
-        }
+        List<String> stringsPart2 = getStrings("day16_2.txt");
         Map<Integer, Instruction> instructionMap = tester.createInstructionMap();
         Processor processor = new Processor();
         processor.setInstructionMap(instructionMap);
-        processor.parseProgram(strings2);
+        processor.parseProgram(stringsPart2);
         processor.run();
         System.out.println(processor.getReg()[0]);
+    }
+
+    private static List<String> getStrings(String fileName) {
+        List<String> strings = null;
+        try {
+            strings = FileParser.readStringListFile(fileName);
+        } catch (IOException e) {
+            System.out.println("Cannot read file " +fileName);
+        }
+        return strings;
     }
 
     private static void day15() {
