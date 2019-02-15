@@ -6,6 +6,13 @@ import java.util.Comparator;
 import java.util.Objects;
 
 public class Coordinates implements Comparable<Coordinates> {
+    public static final Coordinates ZERO = new Coordinates(0,0);
+    public static final Coordinates LEFT = new Coordinates(-1,0);
+    public static final Coordinates RIGHT = new Coordinates(1,0);
+    public static final Coordinates UP = new Coordinates(0,-1);
+    public static final Coordinates DOWN = new Coordinates(0,1);
+
+
     private final int x, y;
 
     public Coordinates(int x, int y) {
@@ -59,14 +66,24 @@ public class Coordinates implements Comparable<Coordinates> {
         else return y - o.y;
     }
 
-    public Coordinates bellow() {
-        return new Coordinates(x,y+1);
+    public Coordinates down() {
+        return new Coordinates(x, y + 1);
     }
 
-    public Coordinates left() {
-        return new Coordinates(x-1,y);
+    public Coordinates up() {
+        return new Coordinates(x, y - 1);
     }
+
+
+    public Coordinates left() {
+        return new Coordinates(x - 1, y);
+    }
+
     public Coordinates right() {
-        return new Coordinates(x+1,y);
+        return new Coordinates(x + 1, y);
+    }
+
+    public Coordinates clone()  {
+        return new Coordinates(x,y);
     }
 }

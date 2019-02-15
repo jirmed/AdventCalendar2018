@@ -55,17 +55,17 @@ public class Ground {
         if (position.getY() > maxY)
             return false;
         if (position.getY() < minY)
-            return pour(position.bellow());
+            return pour(position.down());
         Substance substanceAtPosition = groundMap.get(position);
         if (isSolid(substanceAtPosition))
             return true;
         else if (substanceAtPosition == null)
             groundMap.putIfAbsent(position, WATER);
-//        Coordinates bellowPosition = position.bellow();
-        Substance belowSubstance = groundMap.get(position.bellow());
+//        Coordinates bellowPosition = position.down();
+        Substance belowSubstance = groundMap.get(position.down());
         if (false /*belowSubstance == WATER*/) return false;
         else if (!isSolid(belowSubstance))
-            if (pour(position.bellow())) {
+            if (pour(position.down())) {
                 groundMap.remove(position);
                 return pour(position);
             } else {
@@ -107,9 +107,9 @@ public class Ground {
     private boolean floodStep(Coordinates pos) {
         boolean canFlood = true;
         groundMap.put(pos, WATER);
-        if (!isSolid(groundMap.get(pos.bellow()))) {
-            if (groundMap.get(pos.bellow()) == null)
-                canFlood = pour(pos.bellow());
+        if (!isSolid(groundMap.get(pos.down()))) {
+            if (groundMap.get(pos.down()) == null)
+                canFlood = pour(pos.down());
             else canFlood = false;
         }
         return canFlood;
