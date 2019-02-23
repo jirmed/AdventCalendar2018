@@ -60,6 +60,9 @@ public class Cave {
                     '}';
         }
 
+        public int distanceTo(Node nodeTo) {
+            return Math.abs(x - nodeTo.x) + Math.abs(y - nodeTo.y) + (equipment == nodeTo.equipment ? 0 : MOVE_TIME);
+        }
     }
 
     private final static int MOVE_TIME = 1;
@@ -71,6 +74,7 @@ public class Cave {
 
 
     private final int targetX, targetY;
+    private final Node target;
     private final int depth;
     private int[][] terrainMap;
 
@@ -80,11 +84,12 @@ public class Cave {
         this.targetY = targetY;
         this.depth = depth;
         this.terrainMap = initTerrainMap(getMaxDistance());
+        target = new Node(targetX, targetY, 0, 0);
     }
 
     private int getMaxDistance() {
 
-        return (targetX + targetY) * (MOVE_TIME + CHANGE_TIME) /2 ;
+        return (targetX + targetY) * (MOVE_TIME + CHANGE_TIME);
     }
 
     private int[][] initTerrainMap(int maxDistance) {
@@ -120,16 +125,19 @@ public class Cave {
 
         Map<Node, Node> unsettledNodes = new HashMap<>();
         Set<Node> settledNodes = new HashSet<>();
-        PriorityQueue<Node> nodes = new PriorityQueue<>(Comparator.comparingInt(Node::getDistance));
+        Comparator<Node> nodeComparator = Comparator.comparingInt(o -> o.distance + o.distanceTo(target));
+        PriorityQueue<Node> nodes = new PriorityQueue<>(nodeComparator);
 
         Node node = new Node(0, 0, 0, 0);
         unsettledNodes.put(node, node);
         nodes.add(node);
         while (!nodes.isEmpty()) {
             Node currentNode = nodes.poll();
+            if (settledNodes.contains(currentNode)) continue;
             getadjacentNodes(currentNode, unsettledNodes, settledNodes, maxDistance, nodes);
             unsettledNodes.remove(currentNode);
             settledNodes.add(currentNode);
+            if (currentNode.equals(target)) break;
         }
 
         return getDistance(settledNodes, targetX, targetY, 0);
@@ -164,8 +172,9 @@ public class Cave {
                             || newX >= maxDistance || newY >= maxDistance) continue;
                     if (isValidEquipment(newX, newY, node.equipment)) {
                         int distance = node.distance + MOVE_TIME;
-                        if (Math.abs(newX - targetX) + Math.abs(newY - targetY) + distance > maxDistance) continue;
+//                        if (Math.abs(newX - targetX) + Math.abs(newY - targetY) + distance > maxDistance) continue;
                         Node adjacentNode = new Node(newX, newY, node.equipment, distance);
+                        if (adjacentNode.distanceTo(target) > maxDistance) continue;
                         addNode(unsettledNodes, settledNodes, nodes, adjacentNode);
                     }
                 }
@@ -178,7 +187,7 @@ public class Cave {
         Node originalNode = unsettledNodes.get(node);
         if (originalNode != null) {
             if (originalNode.distance > node.distance)
-                originalNode.setDistance(node.distance);
+                nodes.add(node);
         } else {
             nodes.add(node);
             unsettledNodes.put(node, node);
