@@ -5,13 +5,12 @@
  */
 package net.konzult.adventcalendar2018;
 
-import net.konzult.adventcalendar2018.Day22.Cave1;
+import net.konzult.adventcalendar2018.Day22.Cave;
 import net.konzult.adventcalendar2018.day1.CannotCalibrateException;
 import net.konzult.adventcalendar2018.day1.Device;
 import net.konzult.adventcalendar2018.day10.Message;
 import net.konzult.adventcalendar2018.day11.Battery;
 import net.konzult.adventcalendar2018.day12.Garden;
-import net.konzult.adventcalendar2018.day13.Coordinates;
 import net.konzult.adventcalendar2018.day13.TrackChart;
 import net.konzult.adventcalendar2018.day14.ChocolateChart;
 import net.konzult.adventcalendar2018.day15.BattleField;
@@ -72,7 +71,7 @@ public class Application {
         System.out.println("Day 22");
         System.out.println("Task 1");
         int depth = 5616;
-        Cave1 cave = new Cave1(10, 785, depth);
+        Cave cave = new Cave(10, 785, depth);
         System.out.println(cave.getTotalRiskLevel());
 
         System.out.println("Task 2");
