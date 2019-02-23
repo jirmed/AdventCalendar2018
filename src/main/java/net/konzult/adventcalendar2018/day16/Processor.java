@@ -8,9 +8,11 @@ public class Processor {
 
     private int[] reg;
     private Map<Integer, Instruction> instructionMap = new HashMap<>();
-    //    private List<int[]> programRaw = new ArrayList<>();
     private int ipRegister = -1;
     private List<Command> program;
+    private long instrCount;
+    private int minReg5At28 = Integer.MAX_VALUE;
+    private Set<Integer> reg5Set = new HashSet<>();
 
 
     public Processor() {
@@ -96,6 +98,7 @@ public class Processor {
     }
 
     public int[] operation(Instruction instruction, int a, int b, int c) {
+        instrCount++;
         switch (instruction) {
             case ADDR:
                 reg[c] = reg[a] + reg[b];
@@ -153,14 +156,21 @@ public class Processor {
         return operation(command.getInstruction(), command.getA(), command.getB(), command.getC());
     }
 
-    public void run(int breakpoint) {
+    public void run(int breakpoint, long maxOperations) {
         if (ipRegister < 0)
             program.stream().forEach(line
                     -> this.operation(line));
         else {
             int ip = reg[ipRegister];
-            while (ip < program.size() && ip!=breakpoint) {
+            while (ip < program.size() && ip != breakpoint && (maxOperations == 0 || maxOperations >= instrCount)) {
                 Command command = program.get(ip);
+                if (ip == 28) {
+                    if (!reg5Set.contains(reg[5])) {
+                        minReg5At28 = reg[5];
+                        reg5Set.add(reg[5]);
+                        System.out.println(minReg5At28);
+                    }
+                }
                 operation(command);
                 ip = ++reg[ipRegister];
             }
@@ -169,18 +179,18 @@ public class Processor {
 
     public void run(boolean speedUp) {
         if (speedUp) {
-            run(2);
+            run(2, 0);
             reg[0] = getSumOfDividers(reg[4]);
         } else {
-            run(-1);
+            run(-1, 0);
         }
     }
 
     public static int getSumOfDividers(int input) {
         int result = input;
-        for (int i = 1; i <= input/2 + 1; i++) {
+        for (int i = 1; i <= input / 2 + 1; i++) {
             if (input % i == 0)
-                result +=i;
+                result += i;
         }
         return result;
     }
@@ -195,5 +205,14 @@ public class Processor {
 
     public List<Command> getProgram() {
         return program;
+    }
+
+    public long getInstrCount() {
+        return instrCount;
+    }
+
+    public void reset() {
+        reg = new int[reg.length];
+        instrCount = 0;
     }
 }

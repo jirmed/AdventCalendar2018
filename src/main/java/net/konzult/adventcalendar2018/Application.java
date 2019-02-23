@@ -5,11 +5,13 @@
  */
 package net.konzult.adventcalendar2018;
 
+import net.konzult.adventcalendar2018.Day22.Cave1;
 import net.konzult.adventcalendar2018.day1.CannotCalibrateException;
 import net.konzult.adventcalendar2018.day1.Device;
 import net.konzult.adventcalendar2018.day10.Message;
 import net.konzult.adventcalendar2018.day11.Battery;
 import net.konzult.adventcalendar2018.day12.Garden;
+import net.konzult.adventcalendar2018.day13.Coordinates;
 import net.konzult.adventcalendar2018.day13.TrackChart;
 import net.konzult.adventcalendar2018.day14.ChocolateChart;
 import net.konzult.adventcalendar2018.day15.BattleField;
@@ -20,7 +22,9 @@ import net.konzult.adventcalendar2018.day18.CollectionArea;
 import net.konzult.adventcalendar2018.day2.Box;
 import net.konzult.adventcalendar2018.day3.Fabric;
 import net.konzult.adventcalendar2018.day3.Rectangle;
-import net.konzult.adventcalendar2018.day4.*;
+import net.konzult.adventcalendar2018.day4.Guard;
+import net.konzult.adventcalendar2018.day4.LogAnalyzer;
+import net.konzult.adventcalendar2018.day4.LogItem;
 import net.konzult.adventcalendar2018.day5.Polymer;
 import net.konzult.adventcalendar2018.day6.Coordinate;
 import net.konzult.adventcalendar2018.day6.World;
@@ -58,11 +62,21 @@ public class Application {
 //        day15();
 //        day16();
 //        day18();
-        day19();
+//        day19();
+        day22();
 
 
+    }
 
+    private static void day22() {
+        System.out.println("Day 22");
+        System.out.println("Task 1");
+        int depth = 5616;
+        Cave1 cave = new Cave1(10, 785, depth);
+        System.out.println(cave.getTotalRiskLevel());
 
+        System.out.println("Task 2");
+        System.out.println(cave.getDistanceToTarget());
     }
 
     private static void day19() {
@@ -75,7 +89,7 @@ public class Application {
         System.out.println(processor.getReg()[0]);
 
         System.out.println("Task 2");
-        processor.setReg(new int[]{1,0,0,0,0,0});
+        processor.setReg(new int[]{1, 0, 0, 0, 0, 0});
         processor.run(true);
         System.out.println(processor.getReg()[0]);
 
@@ -92,7 +106,7 @@ public class Application {
 
         System.out.println("Task 2");
         area.parseMap(strings);
-        area.playMinutes(1000000000 );
+        area.playMinutes(1000000000);
         System.out.println(area.getResourceValue());
 
     }
@@ -100,7 +114,7 @@ public class Application {
     private static void day16() {
         System.out.println("Day 16");
         List<String> stringsPart1 = getStrings("day16_1.txt");
-        Tester tester =  Tester.parse(stringsPart1);
+        Tester tester = Tester.parse(stringsPart1);
         System.out.println("Task 1");
         System.out.println(tester.countSamplesWithValidInstructions(3));
 
@@ -110,7 +124,7 @@ public class Application {
         Processor processor = new Processor();
         processor.setInstructionMap(instructionMap);
         processor.parseProgramRaw(stringsPart2);
-        processor.run(-1);
+        processor.run(-1, 0);
         System.out.println(processor.getReg()[0]);
     }
 
@@ -119,7 +133,7 @@ public class Application {
         try {
             strings = FileParser.readStringListFile(fileName);
         } catch (IOException e) {
-            System.out.println("Cannot read file " +fileName);
+            System.out.println("Cannot read file " + fileName);
         }
         return strings;
     }
@@ -232,7 +246,7 @@ public class Application {
         }
 
         System.out.println("Task 2");
-        System.out.println(message.getMinute()-1);
+        System.out.println(message.getMinute() - 1);
 
     }
 

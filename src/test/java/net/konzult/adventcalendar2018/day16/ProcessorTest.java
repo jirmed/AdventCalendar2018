@@ -58,7 +58,7 @@ class ProcessorTest {
         List<String> strings = FileParser.readStringListFile("day19test.txt");
         Processor processor = new Processor(6);
         processor.parseProgram(strings);
-        processor.run(-1);
+        processor.run(-1, 0);
         assertThat(processor.getReg()[0]).isEqualTo(7);
     }
 
@@ -75,5 +75,23 @@ class ProcessorTest {
     @Test
     void testGetSumOfDividers() throws Exception {
         assertThat(Processor.getSumOfDividers(994)).isEqualTo(1728);
+    }
+
+    @Test
+    void testDay21() throws Exception {
+        List<String> strings = FileParser.readStringListFile("day21.txt");
+        Processor processor = new Processor(6);
+        processor.parseProgram(strings);
+        int maxCount = Integer.MAX_VALUE;
+        int maxAtReg0 = -1;
+        for (int i = 0; i < 1 ; i++) {
+            processor.reset();
+            processor.getReg()[0]=i;
+            processor.run(-1,1000000000000l);
+            if (processor.getReg()[5]<maxCount) {
+                maxCount = processor.getReg()[5];
+            }
+        }
+        assertThat(maxCount).isEqualTo(0);
     }
 }

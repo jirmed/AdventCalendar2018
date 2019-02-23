@@ -2,7 +2,9 @@ package net.konzult.adventcalendar2018.day13;
 
 import net.konzult.adventcalendar2018.day6.Coordinate;
 
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 public class Coordinates implements Comparable<Coordinates> {
@@ -11,6 +13,9 @@ public class Coordinates implements Comparable<Coordinates> {
     public static final Coordinates RIGHT = new Coordinates(1,0);
     public static final Coordinates UP = new Coordinates(0,-1);
     public static final Coordinates DOWN = new Coordinates(0,1);
+
+    public static final List<Coordinates> ORTOGONAL_NEIGHBOURS =
+            Arrays.asList(UP, DOWN, LEFT, RIGHT);
 
 
     private final int x, y;
