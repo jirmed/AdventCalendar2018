@@ -31,10 +31,6 @@ public class Cave {
             return distance;
         }
 
-        void setDistance(int distance) {
-            this.distance = distance;
-        }
-
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -60,7 +56,7 @@ public class Cave {
                     '}';
         }
 
-        public int distanceTo(Node nodeTo) {
+        int distanceTo(Node nodeTo) {
             return Math.abs(x - nodeTo.x) + Math.abs(y - nodeTo.y) + (equipment == nodeTo.equipment ? 0 : MOVE_TIME);
         }
     }
@@ -155,9 +151,9 @@ public class Cave {
                                   Queue<Node> nodes) {
         // change equipment
         for (int equipment = 0; equipment < 3; equipment++) {
+            Node adjacentNode = new Node(node.x, node.y, equipment, node.distance + CHANGE_EQUIPMENT_TIME);
             if ((equipment != node.equipment)
-                    && isValidEquipment(node.x, node.y, equipment)) {
-                Node adjacentNode = new Node(node.x, node.y, equipment, node.distance + CHANGE_EQUIPMENT_TIME);
+                    && isValidEquipment(adjacentNode)) {
                 addNode(unsettledNodes, settledNodes, nodes, adjacentNode);
             }
         }
@@ -170,10 +166,8 @@ public class Cave {
                     int newY = node.getY() + y;
                     if (newX < 0 || newY < 0
                             || newX >= maxDistance || newY >= maxDistance) continue;
-                    if (isValidEquipment(newX, newY, node.equipment)) {
-                        int distance = node.distance + MOVE_TIME;
-//                        if (Math.abs(newX - targetX) + Math.abs(newY - targetY) + distance > maxDistance) continue;
-                        Node adjacentNode = new Node(newX, newY, node.equipment, distance);
+                    Node adjacentNode = new Node(newX, newY, node.equipment, node.distance + MOVE_TIME);
+                    if (isValidEquipment(adjacentNode)) {
                         if (adjacentNode.distanceTo(target) > maxDistance) continue;
                         addNode(unsettledNodes, settledNodes, nodes, adjacentNode);
                     }
@@ -194,13 +188,13 @@ public class Cave {
         }
     }
 
-    private boolean isValidEquipment(int x, int y, int equipment) {
-        if (x < 0 || y < 0 || x >= terrainMap.length || y >= terrainMap[x].length)
+    private boolean isValidEquipment(Node node) {
+        if (node.x < 0 || node.y < 0 || node.x >= terrainMap.length || node.y >= terrainMap[node.x].length)
             return false;
-        int terrain = terrainMap[x][y];
-        return ((terrain != 0) || (equipment != 2))  //rock and neither
-                && ((terrain != 1) || (equipment != 0)) //wet and torch
-                && ((terrain != 2) || (equipment != 1)); // narrow and climbing gear
+        int terrain = terrainMap[node.x][node.y];
+        return ((terrain != 0) || (node.equipment != 2))  //rock and neither
+                && ((terrain != 1) || (node.equipment != 0)) //wet and torch
+                && ((terrain != 2) || (node.equipment != 1)); // narrow and climbing gear
     }
 
 }
